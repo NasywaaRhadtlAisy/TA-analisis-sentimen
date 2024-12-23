@@ -37,7 +37,7 @@ def load_models():
     indoroberta_tokenizer = AutoTokenizer.from_pretrained("LazarusNLP/simcse-indoroberta-base")
     indoroberta_model = AutoModelForSequenceClassification.from_pretrained("LazarusNLP/simcse-indoroberta-base", num_labels=3).to(device)
     model_buffer = download_trained_model("indoroberta")
-    indoroberta_model.load_state_dict(model_buffer, map_location=device))
+    indoroberta_model.load_state_dict(torch.load(model_buffer, map_location=device))
     indoroberta_model.eval()  # Set model ke mode evaluasi
 
     # Load SVM model
