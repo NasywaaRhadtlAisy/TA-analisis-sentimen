@@ -5,3 +5,4 @@ torch
 gensim
 nltk
 wordcloud
+requests
