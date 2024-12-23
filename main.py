@@ -26,6 +26,7 @@ def download_trained_model(opt: str):
     return io.BytesIO(model_bytes)
 
 def load_models(): 
+    device = torch.device("cpu")
     # Load IndoBERT
     indobert_tokenizer = AutoTokenizer.from_pretrained("indolem/indobert-base-uncased", do_lower_case=True)
     indobert_model = AutoModelForSequenceClassification.from_pretrained('indolem/indobert-base-uncased', num_labels=3).to(device)
