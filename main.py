@@ -13,21 +13,31 @@ from nltk.tokenize import word_tokenize
 import re
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import io
 
-@st.cache_resource
+def download_trained_model(opt: str): 
+    urls = {
+        "indobert": "https://github.com/NasywaaRhadtlAisy/TA-analisis-sentimen/releases/download/sentimen-analisis-TA/best_indobert_model1.pt",
+        "indoroberta": "https://github.com/NasywaaRhadtlAisy/TA-analisis-sentimen/releases/download/sentimen-analisis-TA/best_model_indoroberta_fold4.pt"
+    }
+    
+    response = requests.get(urls[opt])
+    model_bytes = response.content
+    return io.BytesIO(model_bytes)
+
 def load_models(): 
-    device = torch.device('cpu')
-
     # Load IndoBERT
     indobert_tokenizer = AutoTokenizer.from_pretrained("indolem/indobert-base-uncased", do_lower_case=True)
     indobert_model = AutoModelForSequenceClassification.from_pretrained('indolem/indobert-base-uncased', num_labels=3).to(device)
-    indobert_model.load_state_dict(torch.load('best_model_indobert_fold1.pt', map_location=device))
+    model_buffer = download_trained_model("indobert")
+    indobert_model.load_state_dict(torch.load(model_buffer, map_location=device))
     indobert_model.eval()  # Set model ke mode evaluasi
 
     # Load IndoRoBERTa
     indoroberta_tokenizer = AutoTokenizer.from_pretrained("LazarusNLP/simcse-indoroberta-base")
     indoroberta_model = AutoModelForSequenceClassification.from_pretrained("LazarusNLP/simcse-indoroberta-base", num_labels=3).to(device)
-    indoroberta_model.load_state_dict(torch.load('best_model_fold4.pt', map_location=device))
+    model_buffer = download_trained_model("indoroberta")
+    indoroberta_model.load_state_dict(model_buffer, map_location=device))
     indoroberta_model.eval()  # Set model ke mode evaluasi
 
     # Load SVM model
