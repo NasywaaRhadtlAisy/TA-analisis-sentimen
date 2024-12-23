@@ -14,6 +14,7 @@ import re
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import io
+import requests
 
 def download_trained_model(opt: str): 
     urls = {
