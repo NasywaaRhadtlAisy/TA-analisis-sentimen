@@ -1,0 +1,7 @@
+streamlit
+plotly
+transformers
+torch
+gensim
+nltk
+wordcloud
